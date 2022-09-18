@@ -44,14 +44,14 @@ body {
     border-radius: 4px;
     background: #7DB290;
     color: #fff;
+
 }
 .tasks{
 
 }
-.checkbox{
+.checkbox {
     vertical-align: middle;
     margin-right: 10px;
-
 }
 li{
     display: flex;
@@ -74,8 +74,12 @@ li{
     text-align: center;
 
 
-
-
-
 }
 
+.checked{
+    text-decoration: line-through;
+}
+
+.unchecked{
+    text-decoration:none;
+}

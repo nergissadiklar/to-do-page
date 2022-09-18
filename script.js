@@ -7,8 +7,13 @@ const getTodosFromStorage = () => {
     return(storage) ? storage : [];
 }
 
+const getDonesFromStorage = () => {
+    const storage = JSON.parse(localStorage.getItem('dones'));
+    return(storage) ? storage : [];
+};
 
 const todos =getTodosFromStorage();
+const dones =getDonesFromStorage();
 
 
  const getToDosToPage = ( ) => {
@@ -36,17 +41,75 @@ window.addEventListener('load',() => {
 
 
 const removeTodo = (target) => {
-     const todo = target.parentNode.childNodes[0].innerHTML;
+     const todo = target.parentNode.childNodes[1].innerHTML;
      removeTodoFromStorage(todo);
      target.parentNode.remove();
-}
+};
 
 const removeTodoFromStorage = (todo) => {
-     const index =todos.indexOf(todo);
+     const index = todos.indexOf(todo);
      if (index > -1){
          todos.splice(index,1);
          localStorage.setItem('todos',JSON.stringify(todos));
      }
+};
+
+const removeDoneFromStorage = (done) => {
+    const index = dones.indexOf(done);
+    if (index > -1){
+        dones.splice(index,1);
+        localStorage.setItem('dones',JSON.stringify(dones));
+    }
+};
+
+
+
+const checkTodo = (target) => {
+    const todo = target.parentNode.childNodes[2].innerHTML;
+    moveTodoToDone(todo,target);
+};
+
+const moveTodoToDone = (todo,target) => {
+    removeTodoFromStorage(todo);
+    dones.push(todo);
+    localStorage.setItem('dones',JSON.stringify(dones));
+    makeItDone(target);
+}
+
+const moveDoneToTodos = (done,target) => {
+    removeDoneFromStorage(done);
+    todos.push(done);
+    localStorage.setItem('todos',JSON.stringify(todos));
+    makeItTodo(target);
+}
+
+
+const makeItTodo = (target) => {
+    target.parentNode.classList.remove('done');
+    target.parentNode.classList.add('todo');
+    target.parentNode.childNodes[0].setAttribute('onclick', 'removeTodo(this)');
+    target.className = '';
+    target.setAttribute('onclick','checkTodo(this)');
+    target.nextSibling.classList.add('unchecked');
+
+
+
+}
+
+const makeItDone = (target) => {
+    const done = target.parentNode.classList.add('done');
+    target.parentNode.classList.remove('todo');
+    target.parentNode.childNodes[0].setAttribute('onclick','removeDone(this)');
+    target.className = '';
+    target.setAttribute('onclick', 'uncheckDone(this)');
+    target.nextSibling.classList.add('checked');
+
+}
+
+const uncheckDone = (target) => {
+    const done = target.parentNode.childNodes[2].innerHTML;
+    moveDoneToTodos(done,target);
+
 }
 
 
